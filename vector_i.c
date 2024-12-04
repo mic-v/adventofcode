@@ -1,18 +1,14 @@
+
 #include "vector_i.h"
+
 #include <stdlib.h>
 
 static const int DEFAULT_CAPACITY = 4;
 
-typedef struct vector_i {
-        int* elements;
-        int capacity;
-        int size;
-} vector_i;
 
 vector_i* vector_new()
 {
         return (vector_i*) malloc(sizeof(vector_i));
-        
 }
 
 void vector_createvec(vector_i* vec)
@@ -38,7 +34,6 @@ void vector_pushback(vector_i* vec, const int element)
                 printf("New allocation %d\n", vec->capacity);
         }
         vec->elements[vec->size++] = element;
-
 }
 
 size_t vector_size(vector_i* vec)
@@ -57,3 +52,10 @@ void vector_popback(vector_i* vec)
         vec->elements[vec->size] = 0;
         vec->size--;
 }
+
+int vector_at(vector_i* vec, const size_t index)
+{
+       return vec->elements[index]; 
+}
+
+

@@ -1,16 +1,17 @@
 #include <stdio.h>
-#include "vector_i.h"
+#include <stdlib.h>
 #include <memory.h>
 
+#include "vector_i.h"
+
+//compare between two values
 int comp(const void *a, const void *b) 
 {
         return (*(int *)b - *(int*)a);
 }
 
-void input_file() 
+void input_file(vector_i* first_vec, vector_i* sec_vec) 
 {
-        vector_i* first_vec = vector_new();
-        vector_createvec(first_vec);
         int c;
         FILE *file;
         file = fopen("input.txt", "r");
@@ -28,12 +29,10 @@ void input_file()
                 while((c = getc(file)) != EOF) {
                         if(i== size - 1 && j == size - 1) {
                                 //set end of string
-                                //fnum[first_num] = '\0';
-                                //lnum[second_num] = '\0';
                                 sscanf(fnum, "%d", &first_num);
-                                sscanf(fnum, "%d", &second_num);
-                                //printf("First num: %d Second num: %d\n", first_num, second_num);
+                                sscanf(lnum, "%d", &second_num);
                                 vector_pushback(first_vec, first_num);
+                                vector_pushback(sec_vec, second_num);
                                 //reset string
                                 i = 0;
                                 j = 0;
@@ -49,19 +48,24 @@ void input_file()
                                        lnum[j++] = c;
                                }
                         }
-                        //putchar(c);
                 }
                 fclose(file);
         }
-        for(int i = 0; i < vector_size(first_vec); i++)
-        {
-                printf("%d\n", first_vec->elements[i]);
-        }
+        qsort(first_vec->elements, vector_size(first_vec), sizeof(first_vec->elements[0]), comp);
+        qsort(sec_vec->elements, vector_size(sec_vec), sizeof(sec_vec->elements[0]), comp);
 }
 
 int main(int argc, char** argv)
 {
-        printf("testing\n");
-        input_file();
+        vector_i* first_vec = vector_new();
+        vector_i* sec_vec = vector_new();
+        vector_createvec(first_vec);
+        vector_createvec(sec_vec);
+        input_file(first_vec, sec_vec);
+        for(int i = first_vec->size - 1; i >= 0; i--)
+        {
+                printf("%d %d ", first_vec->elements[i], sec_vec->elements[i]); 
+        }
+
 	return 0;
 }
