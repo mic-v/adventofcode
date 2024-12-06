@@ -62,10 +62,13 @@ int main(int argc, char** argv)
         vector_createvec(first_vec);
         vector_createvec(sec_vec);
         input_file(first_vec, sec_vec);
-        for(int i = first_vec->size - 1; i >= 0; i--)
-        {
-                printf("%d %d ", first_vec->elements[i], sec_vec->elements[i]); 
-        }
 
+        unsigned int distance = 0;
+        for(int i = vector_size(first_vec) - 1; i >=0; i--)
+        {
+                distance+= abs(first_vec->elements[i] - sec_vec->elements[i]);
+        }
+        printf("Distance: %d\n", distance);
+        //Answer is 2176849
 	return 0;
 }

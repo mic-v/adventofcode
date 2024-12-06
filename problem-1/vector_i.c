@@ -46,11 +46,13 @@ size_t vector_capacity(vector_i* vec)
         return vec->capacity;
 }
 
-void vector_popback(vector_i* vec)
+int vector_popback(vector_i* vec)
 {
         int lastIndex = vec->size - 1;
+        int element = vec->elements[lastIndex]; 
         vec->elements[vec->size] = 0;
         vec->size--;
+        return element;
 }
 
 int vector_at(vector_i* vec, const size_t index)
