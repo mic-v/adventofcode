@@ -18,33 +18,43 @@ void print_2d_vec(const std::vector<std::vector<T>>& vec)
 u_int8_t check_word(const std::vector<std::vector<char>>& vec, int x, int y)
 {
         u_int8_t count = 0;
-        size_t width = vec[0].size();
-        size_t height = vec.size();
+        auto width = vec[0].size();
+        auto height = vec.size();
+
         
         //check up and down
-        if(x+3 < height && vec[x][y] == 'X' && vec[x+1][y] == 'M' && vec[x+2][y] == 'A' && vec[x+3][y] == 'S') count++;
-        if(x-3 >= 0 && vec[x][y] == 'X' && vec[x-1][y] == 'M' && vec[x-2][y] == 'A' && vec[x-3][y] == 'S') count++;
+        if(x+3 < height && vec[x][y] == 'X' && vec[x+1][y] == 'M' && vec[x+2][y] == 'A' && vec[x+3][y] == 'S') 
+                count++; 
+        if(x-3 >= 0 && vec[x][y] == 'X' && vec[x-1][y] == 'M' && vec[x-2][y] == 'A' && vec[x-3][y] == 'S') 
+                count++;
         //check across
-        if(y+3 < width && vec[x][y] == 'X' && vec[x][y+1] == 'M' && vec[x][y+2] == 'A' && vec[x][y+3] == 'S') count++;
-        if(y-3 >= 0 && vec[x][y] == 'X' && vec[x][y-1] == 'M' && vec[x][y-2] == 'A' && vec[x][y-3] == 'S') count++;
+        if(y+3 < width && vec[x][y] == 'X' && vec[x][y+1] == 'M' && vec[x][y+2] == 'A' && vec[x][y+3] == 'S') 
+                ++count;
+        if((y-3 >= 0) && (vec[x][y] == 'X') && (vec[x][y-1] == 'M') && (vec[x][y-2]) == 'A' && (vec[x][y-3] == 'S')) 
+                ++count;
         //left diagonal
-        if(x-3 >= 0 && y-3 >=0 && vec[x][y] == 'X' && vec[x-1][y-1] == 'M' && vec[x-2][y-2] == 'A' && vec[x-3][y-3] == 'S') count++;
+        if(x-3 >= 0 && y-3 >=0 && vec[x][y] == 'X' && vec[x-1][y-1] == 'M' && vec[x-2][y-2] == 'A' && vec[x-3][y-3] == 'S') 
+                ++count;
         
         //bottom left diagonal
-        if(x+3 < height && y-3 >= 0 && vec[x][y] == 'X' && vec[x+1][y-1] == 'M' && vec[x+2][y-2] == 'A' && vec[x+3][y-3] == 'S') count++;
+        if(x+3 < height && y-3 >= 0 && vec[x][y] == 'X' && vec[x+1][y-1] == 'M' && vec[x+2][y-2] == 'A' && vec[x+3][y-3] == 'S') 
+                ++count;
 
         //right diagonal
-        if(x-3 >= 0 && y+3 < width && vec[x][y] == 'X' && vec[x-1][y+1] == 'M' && vec[x-2][y+2] == 'A' && vec[x-3][y+3] == 'S') count++;
+        if(x-3 >= 0 && y+3 < width && vec[x][y] == 'X' && vec[x-1][y+1] == 'M' && vec[x-2][y+2] == 'A' && vec[x-3][y+3] == 'S') 
+                ++count;
+
         //bottom right diagonal
-        if(x+3 < height && y+3 < width && vec[x][y] == 'X' && vec[x+1][y+1] == 'M' && vec[x+2][y+2] == 'A' && vec[x+3][y+3] == 'S') count++;
-        
+        if(x+3 < height && y+3 < width && vec[x][y] == 'X' && vec[x+1][y+1] == 'M' && vec[x+2][y+2] == 'A' && vec[x+3][y+3] == 'S') 
+                ++count;
+
 
         return count;
 }
 
-u_int8_t word_search(const std::vector<std::vector<char>>& vec)
+uint16_t word_search(const std::vector<std::vector<char>>& vec)
 {
-        u_int8_t count = 0;
+        u_int16_t count = 0;
 
         for(int i = 0; i < vec.size(); i++)
         {
@@ -59,27 +69,27 @@ u_int8_t word_search(const std::vector<std::vector<char>>& vec)
 
 int main()
 {
-        std::ifstream in_file("testinput.txt");
+        std::ifstream in_file("input.txt");
 
 
         std::vector<std::vector<char>> data;
-        data.push_back(std::vector<char>());
 
-        char c;
-        int i = 0; 
-        while(in_file.get(c)) {
-                if(c != '\n') 
+        std::string line;
+        while(std::getline(in_file, line))
+        {
+                std::vector<char> row;
+                for(char &c: line)
                 {
-                        data[i].push_back(c);
-                } else
-                {
-                        data.push_back(std::vector<char>());
-                        i++;
+                        if(c != '\n')
+                                row.push_back(c);
                 }
+                data.push_back(row);
         }
-        in_file.close(); 
 
-        u_int8_t count = word_search(data);
+       
+        in_file.close(); 
+        print_2d_vec(data);
+        u_int16_t count = word_search(data);
 
 
         printf("Count: %d\n", count);
